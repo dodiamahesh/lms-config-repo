@@ -5,7 +5,8 @@ spring:
 
         # 1. USER AUTH SERVICE ROUTE (NO JWT FILTER HERE)
         - id: user-auth-service
-          uri: lb://USER-AUTH-SERVICE
+        #  uri: lb://USER-AUTH-SERVICE
+          uri: http://localhost:8081
           predicates:
             - Path=/auth/**
           filters:
