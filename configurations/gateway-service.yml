@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        # 1. યુઝર અને ઓથેન્ટિકેશન સર્વિસ માટે રૂટીંગ
+        - id: user-auth-service
+          uri: lb://USER-AUTH-SERVICE # lb:// (Load Balancer) Discovery Server નો ઉપયોગ કરશે
+          predicates:
+            - Path=/auth/**
+          filters:
+            - name: JwtAuthenticationFilter # JWT ફિલ્ટર લાગુ કરો
+            - name: RequestRateLimiter # રેટ લિમિટર લાગુ કરો
+              args:
+                redis-rate-limiter.replenishRate: 10 # પ્રતિ સેકન્ડ 10 વિનંતીઓ
+                redis-rate-limiter.burstCapacity: 20 # બર્સ્ટ કેપેસિટી 20 વિનંતીઓ
+                key-resolver: '#{@ipAddressKeyResolver}' # IP-આધારિત લિમિટ
+
+        # 2. કેટલોગ સર્વિસ માટે રૂટીંગ
+        - id: catalog-service
+          uri: lb://CATALOG-SERVICE
+          predicates:
+            - Path=/catalog/**
+          filters:
+            - name: JwtAuthenticationFilter # JWT ફિલ્ટર લાગુ કરો
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+                key-resolver: '#{@ipAddressKeyResolver}' # IP-આધારિત લિમિટ
+      
+      # અહીં global filters સેટ કરી શકાય છે
+
+# રેટ લિમિટર માટે Redis રૂપરેખાંકન (Config Server માંથી લોડ થશે)
+# આ ગેટવેને અન્ય સર્વિસિસમાંથી રૂપરેખાંકન અલગ રાખવામાં મદદ કરે છે.
+# આ રૂપરેખાંકન bootstrap.yml માં Redis સેટિંગ્સને ઓવરરાઇડ કરશે.
+# (નોંધ: Redis instance ચાલુ હોવો જરૂરી છે)

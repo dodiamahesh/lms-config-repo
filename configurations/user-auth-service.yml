@@ -1,0 +1,18 @@
+# MySQL ડેટાબેઝ રૂપરેખાંકન
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/lms_catalog_db?useSSL=false
+    username: root
+    password: Root@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # વિકાસ માટે, પ્રોડક્શનમાં 'none' અથવા 'validate' નો ઉપયોગ કરવો
+    show-sql: true
+
+# JWT રૂપરેખાંકન
+jwt:
+  # આ કી ગેટવે સર્વિસમાં પણ સમાન હોવી જોઈએ! ઓછામાં ઓછા 32-બાઇટ્સ (256-બિટ) લાંબી હોવી જોઈએ.
+  secret: your-super-secret-key-for-lms-jwt-validation-must-be-at-least-32-bytes
+  expiration:
+    ms: 86400000 # 24 કલાક (મિલિસેકન્ડમાં)
