@@ -15,8 +15,3 @@ spring:
     caffeine:
       spec: maximumSize=500,expireAfterAccess=600s # 600 સેકન્ડ (10 મિનિટ) પછી કેશ એન્ટ્રી સમાપ્ત
     # અહીં અન્ય કેશ વ્યાખ્યાયિત કરી શકાય છે
-    
-    
-    #spring.datasource.url=jdbc:mysql://localhost:3306/librarymanagement?useSSL=false
-spring.datasource.username=root
-spring.datasource.password=Root@123
